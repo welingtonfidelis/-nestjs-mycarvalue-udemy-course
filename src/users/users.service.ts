@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './users.entity';
@@ -18,6 +22,8 @@ export class UsersService {
   }
 
   async findById(id: number) {
+    if (!id) throw new BadRequestException('ID must be a valid number');
+
     const user = await this.repo.findOne(id);
 
     if (!user) throw new NotFoundException('User not found');
